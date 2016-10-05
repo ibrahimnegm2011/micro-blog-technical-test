@@ -36,7 +36,7 @@ sudo ansible-galaxy install -r requirements.yml --ignore-errors
 ### Add following line to your host machine /etc/hosts:
 
 ```
-192.168.100.120 micro-blog.dev
+10.1.1.3 micro-blog.dev
 ```
 
 If you are having issues with Ansible / Vagrant or would prefer to use your own web server please refer to the link below on how to configure Silex:
@@ -54,5 +54,5 @@ vagrant up
 
 ### Nginx
 
-* visit 192.168.100.120 for Nginx test page
+* visit 10.1.1.3 for Nginx test page
 * visit http://micro-blog.dev/api/posts to verify the micro-blog is configured correctly

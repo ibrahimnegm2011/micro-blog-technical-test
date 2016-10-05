@@ -2,7 +2,7 @@
 
 // Silex documentation: http://silex.sensiolabs.org/doc/
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
@@ -15,14 +15,14 @@ TODO: Add a users table to sqlite db
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
-        'driver'   => 'pdo_sqlite',
-        'path'     => __DIR__.'/app.db',
+        'driver' => 'pdo_sqlite',
+        'path' => __DIR__ . '/app.db',
     ),
 ));
 
 // Twig template engine config
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/views',
+    'twig.path' => __DIR__ . '/views',
 ));
 
 
@@ -41,31 +41,30 @@ TODO: Error checking - e.g. if try retrieve posts for a user_id that does
       Extra: Improve on current API code where you see necessary
 */
 
-$app->get('/api/posts', function() use($app) {
-    $sql = "SELECT rowid, * FROM posts";
+$app->get('/api/posts', function () use ($app) {
+    $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id";
     $posts = $app['db']->fetchAll($sql);
 
     return $app->json($posts, 200);
 });
 
-$app->get('/api/posts/user/{user_id}', function($user_id) use($app) {
-    $sql = "SELECT rowid, * FROM posts WHERE user_id = ?";
-    $posts = $app['db']->fetchAll($sql, array((int) $user_id));
+$app->get('/api/posts/user/{user_id}', function ($user_id) use ($app) {
+    $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.user_id = ?";
+    $posts = $app['db']->fetchAll($sql, array((int)$user_id));
 
     return $app->json($posts, 200);
 });
 
-$app->get('/api/posts/id/{post_id}', function($post_id) use($app) {
-  $sql = "SELECT rowid, * FROM posts WHERE rowid = ?";
-  $post = $app['db']->fetchAssoc($sql, array((int) $post_id));
+$app->get('/api/posts/id/{post_id}', function ($post_id) use ($app) {
+    $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.rowid = ?";
+    $post = $app['db']->fetchAssoc($sql, array((int)$post_id));
 
-  return $app->json($post, 200);
+    return $app->json($post, 200);
 });
 
 $app->post('/api/posts/new', function (Request $request) {
-  //TODO
+    //TODO
 });
-
 
 
 /* ------- micro-blog web app ---------
@@ -78,8 +77,8 @@ TODO: Build front-end of web app in the / endpoint below - Add more
       See TODO in index.twig for more instructions / suggestions
 */
 
-$app->get('/', function() use($app) {
-  return $app['twig']->render('index.twig');
+$app->get('/', function () use ($app) {
+    return $app['twig']->render('index.twig');
 });
 
 
