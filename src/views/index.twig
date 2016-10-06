@@ -10,16 +10,16 @@
     <title>Micro Blog</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="assets/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="http://micro-blog.dev/assets/stylesheets/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="assets/stylesheets/style.css" rel="stylesheet">
+    <link href="http://micro-blog.dev/assets/stylesheets/style.css" rel="stylesheet">
 
     <!-- jQuery -->
-    <script src="assets/javascript/jquery.js"></script>
+    <script src="http://micro-blog.dev/assets/javascript/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="assets/javascript/bootstrap.min.js"></script>
+    <script src="http://micro-blog.dev/assets/javascript/bootstrap.min.js"></script>
 
-    <script src="assets/javascript/blogModule.js"></script>
+    <script src="http://micro-blog.dev/assets/javascript/blogModule.js"></script>
 
     <!--
      - Include you stylesheets and javascripts in here
@@ -63,39 +63,45 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-8">
-            <h1 class="page-header"> All Posts </h1>
+            <h1 class="page-header"> {{ title }} </h1>
         </div>
     </div>
     <div class="pull-right">
-        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#controlPostModal">
+        <button id="createPostBtn" type="button" class="btn btn-primary">
             Create Post
         </button>
     </div>
     <!-- /.row -->
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Project One</h3>
-            <h5><i>Created By : </i> <a href="/api/posts/user/1">Ibrahim Negm</a></h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita
-                laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis
-                atque eveniet unde.</p>
-            <a class="btn btn-success" href="/api/posts/id/1">
-                View
-                <span class="glyphicon glyphicon-eye-open"></span>
-            </a>
-            <a class="btn btn-info" href="/api/posts/edit/1">
-                Edit
-                <span class="glyphicon glyphicon-edit"></span>
-            </a>
-            <a class="btn btn-danger" href="/api/posts/delete/1">
-                Delete
-                <span class="glyphicon glyphicon-remove"></span>
-            </a>
-        </div>
-    </div>
+    <div id="postContainer">
+        {% for post in posts %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h5><i>Created By : </i> <a href="/user/{{ post.user_id }}">{{ post.name }}</a></h5>
+                    <h5><i>date : </i> {{ post.date|date('d M Y') }}</h5>
+                    <p>{{ post.content }}</p>
+                    <div class="pull-right">
+                        <a class="btn btn-success" href="/post/id/{{ post.rowid }}">
+                            View
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>
+                        <btn class="btn btn-info" href="/api/posts/edit/{{ post.rowid }}">
+                            Edit
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </btn>
+                        <btn class="btn btn-danger" href="/api/posts/delete/{{ post.rowid }}">
+                            Delete
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </btn>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <h4> There is no posts published yet</h4>
+        {% endfor %}
 
-    <hr>
+        <hr>
+    </div>
 
     <!-- Footer -->
     <footer>

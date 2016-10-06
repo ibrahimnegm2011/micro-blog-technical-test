@@ -78,7 +78,34 @@ TODO: Build front-end of web app in the / endpoint below - Add more
 */
 
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('index.twig');
+    $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id";
+    $posts = $app['db']->fetchAll($sql);
+
+    return $app['twig']->render('index.twig', [
+        'title' => "All Posts",
+        'posts' => $posts
+    ]);
+});
+
+$app->get('/user/{user_id}', function ($user_id) use ($app) {
+    $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.user_id = ?";
+    $posts = $app['db']->fetchAll($sql, array((int)$user_id));
+    $user_name = $posts[0]['name'];
+
+    return $app['twig']->render('index.twig', [
+        'title' => "All Posts for {$user_name}",
+        'posts' => $posts
+    ]);
+});
+
+$app->get('/post/id/{post_id}', function ($post_id) use ($app) {
+    $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.rowid = ?";
+    $post = $app['db']->fetchAssoc($sql, array((int)$post_id));
+
+    return $app['twig']->render('post.twig', [
+        'title' => "Post #{$post['rowid']}",
+        'post' => $post
+    ]);
 });
 
 
