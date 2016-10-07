@@ -49,6 +49,13 @@ $app->get('/api/posts', function () use ($app) {
 });
 
 $app->get('/api/posts/user/{user_id}', function ($user_id) use ($app) {
+    //check if this user exist
+    $sql = "SELECT user_id FROM users WHERE user_id = ?";
+    $user = $app['db']->fetchAssoc($sql, array((int)$user_id));
+    if (!$user) {
+        $app->abort(404, "User $user_id does not exist.");
+    }
+
     $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.user_id = ?";
     $posts = $app['db']->fetchAll($sql, array((int)$user_id));
 
@@ -59,11 +66,35 @@ $app->get('/api/posts/id/{post_id}', function ($post_id) use ($app) {
     $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.rowid = ?";
     $post = $app['db']->fetchAssoc($sql, array((int)$post_id));
 
+    if (!$post) {
+        $app->abort(404, "Post $post_id does not exist.");
+    }
     return $app->json($post, 200);
 });
 
 $app->post('/api/posts/new', function (Request $request) {
     //TODO
+});
+
+$app->delete('/api/posts/delete/{id}', function ($id) use ($app) {
+    $sql = "SELECT posts.rowid FROM posts  WHERE posts.rowid = ?";
+    $post = $app['db']->fetchAssoc($sql, array((int)$id));
+
+    if (!$post) {
+        $app->abort(404, "Post $id does not exist.");
+    }
+
+    $sql = "DELETE FROM posts WHERE posts.rowid = ?";
+    $deletedCount = $app['db']->executeUpdate($sql, array((int)$id));
+
+    return $app->json(['msg' => 'OK', 'deleted_rows' => $deletedCount], 200);
+});
+
+$app->get('/api/users', function () use ($app) {
+    $sql = "SELECT users.* FROM users";
+    $users = $app['db']->fetchAll($sql);
+
+    return $app->json($users, 200);
 });
 
 
@@ -87,7 +118,7 @@ $app->get('/', function () use ($app) {
     ]);
 });
 
-$app->get('/user/{user_id}', function ($user_id) use ($app) {
+$app->get('/posts/user/{user_id}', function ($user_id) use ($app) {
     $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.user_id = ?";
     $posts = $app['db']->fetchAll($sql, array((int)$user_id));
     $user_name = $posts[0]['name'];
@@ -102,6 +133,9 @@ $app->get('/post/id/{post_id}', function ($post_id) use ($app) {
     $sql = "SELECT posts.rowid, posts.*, users.name FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.rowid = ?";
     $post = $app['db']->fetchAssoc($sql, array((int)$post_id));
 
+    if (!$post) {
+        $app->abort(404, "Post $post_id does not exist.");
+    }
     return $app['twig']->render('post.twig', [
         'title' => "Post #{$post['rowid']}",
         'post' => $post

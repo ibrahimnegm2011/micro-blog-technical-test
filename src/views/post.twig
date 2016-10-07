@@ -47,9 +47,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="/dashboard">Dashboard</a>
-                </li>
+                {#<li>#}
+                    {#<a href="/dashboard">Dashboard</a>#}
+                {#</li>#}
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -70,18 +70,18 @@
         <a class="btn btn-default" href="/">
             All Posts
         </a>
-        <a class="btn btn-success" href="/user/{{ post.user_id }}">
+        <a class="btn btn-success" href="/posts/user/{{ post.user_id }}">
             User Posts
         </a>
         <button id="createPostBtn" type="button" class="btn btn-primary">
             Create New Post
         </button>
-        <btn class="btn btn-info" href="/api/posts/edit/{{ post.rowid }}">
+        <button class="btn btn-info editPostBtn" data-rowid="{{ post.rowid }}">
             Edit
-        </btn>
-        <btn class="btn btn-danger" href="/api/posts/delete/{{ post.rowid }}">
+        </button>
+        <button class="btn btn-danger deletePostBtn" data-rowid="{{ post.rowid }}" data-viewpage="1">
             Delete
-        </btn>
+        </button>
     </div>
     <!-- /.row -->
 
@@ -105,6 +105,8 @@
         </div>
         <!-- /.row -->
     </footer>
+
+    {{ include('create_post_modal.html') }}
 
 </div>
 <!-- /.container -->
