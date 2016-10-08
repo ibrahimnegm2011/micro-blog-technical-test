@@ -7,6 +7,12 @@
                 <h3 id="myModalLabel">Control Post</h3>
             </div>
             <div class="modal-body">
+                <div id="postModalErrorsMsg" class="alert alert-danger" style="display: none">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>There are Some errors : </h4>
+                    <ol>
+                    </ol>
+                </div>
                 <form id="postForm" method="post">
                     <div class="form-group">
                         <label for="userInput" class="control-label">User:</label>
@@ -22,7 +28,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                <button class="btn btn-primary">Save</button>
+                <button class="btn btn-primary" id="postSaveBtn">Save</button>
             </div>
         </div>
     </div>

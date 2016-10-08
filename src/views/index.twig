@@ -18,14 +18,8 @@
     <script src="http://micro-blog.dev/assets/javascript/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="http://micro-blog.dev/assets/javascript/bootstrap.min.js"></script>
-
+    <!-- post js object to handle all action about posts -->
     <script src="http://micro-blog.dev/assets/javascript/blogModule.js"></script>
-
-    <!--
-     - Include you stylesheets and javascripts in here
-     - Load from /assets/javascripts and /assets/stylesheets  
-     - Try to avoid inline javascript and css if you can
-    -->
 
 </head>
 <body>
@@ -33,7 +27,6 @@
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1">
@@ -81,7 +74,7 @@
                     <h5><i>date : </i> {{ post.date|date('d M Y') }}</h5>
                     <p>{{ post.content }}</p>
                     <div class="pull-right">
-                        <a class="btn btn-success" href="/post/id/{{ post.rowid }}">
+                        <a class="btn btn-success" href="/posts/{{ post.rowid }}">
                             View
                             <span class="glyphicon glyphicon-eye-open"></span>
                         </a>
@@ -117,22 +110,6 @@
 
 </div>
 <!-- /.container -->
-
-<!--
-  TODO: Build the front-end for the micro-blog using a front-end framework
-        of your choice.
-
-        Suggested approach:
-        - Use jquery to make ajax requests to the API endpoints in src/index.php
-        - Use the Bootstrap front-end framework for css and any of the js
-          components it includes as you see fit
-            - In particular Bootstrap's grid system for layout
-
-  OPTIONAL: You may make use of any extra features of the TWIG template engine
-            if you wish (see: http://twig.sensiolabs.org/)
-
--->
-
 
 </body>
 </html>
